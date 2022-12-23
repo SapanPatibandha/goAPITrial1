@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -94,7 +97,29 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 }
 
 func createMovie(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("create new movie")
 
+	w.Header().Set("Content-Type", "applicaiton/json")
+	var movie Movie
+
+	if r.Body == nil {
+		json.NewEncoder(w).Encode("not a valid payload")
+		return
+	}
+
+	_ = json.NewDecoder(r.Body).Decode(&movie)
+
+	if movie.Id == "" && movie.Name == "" {
+		json.NewEncoder(w).Encode("not a valid payload")
+		return
+	}
+
+	rand.Seed(time.Now().UTC().UnixNano())
+	movie.Id = strconv.Itoa(rand.Intn(100))
+	movies = append(movies, movie)
+
+	json.NewEncoder(w).Encode(movie)
+	return
 }
 
 func updateMovie(w http.ResponseWriter, r *http.Request) {
