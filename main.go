@@ -76,7 +76,21 @@ func getAllMovies(w http.ResponseWriter, r *http.Request) {
 }
 
 func getMovie(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Get movie by ID")
 
+	w.Header().Set("Content-Type", "applicaiton/json")
+
+	params := mux.Vars(r)
+
+	for _, movie := range movies {
+		if movie.Id == params["id"] {
+			json.NewEncoder(w).Encode(movie)
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode("no record found")
+	return
 }
 
 func createMovie(w http.ResponseWriter, r *http.Request) {
