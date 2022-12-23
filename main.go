@@ -102,5 +102,20 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("delete movie by ID")
 
+	w.Header().Set("Content-Type", "applicaiton/json")
+
+	params := mux.Vars(r)
+
+	for index, movie := range movies {
+		if movie.Id == params["id"] {
+			movies = append(movies[:index], movies[:index+1]...)
+			json.NewEncoder(w).Encode("specified record is removed")
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode("no record found")
+	return
 }
