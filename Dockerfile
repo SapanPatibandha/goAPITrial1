@@ -1,18 +1,25 @@
 FROM golang:1.16-alpine
 
+RUN mkdir /app
+
+COPY . /app
+
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
+RUN go build -o goapiondocker ./cmd/app
 
-COPY *.go ./
+# RUN chmod +x /app/brokerApp
 
-RUN go build -o /goapiondocker
+# build a tiny docker image
+# FROM alpine:latest
 
-EXPOSE 8001
+# RUN mkdir /app
 
-CMD [ "/goapiondocker" ]
+# COPY --from=builder /app /app
+
+EXPOSE 8001 8001
+
+CMD [ "/app/goapiondocker" ]
 
 
 #  docker build --tag goapiondocker .
