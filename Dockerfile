@@ -16,5 +16,7 @@ CMD [ "/goapiondocker" ]
 
 
 #  docker build --tag goapiondocker .
+#  docker start dazzling_chandrasekhar
+#  docker stop dazzling_chandrasekhar
 #  docker image tag goapiondocker:latest goapiondocker:v1.0
 #  docker image rm goapiondocker:v1.0
